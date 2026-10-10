@@ -21,15 +21,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping("/search")
-//    public ResponseEntity<?> searchShows(@RequestParam(name = "search_query") String searchQuery) {
-//        if (searchQuery == null || searchQuery.trim().isEmpty()) {
-//            return ResponseEntity.badRequest().body(Map.of("error", "El parámetro 'search_query' es requerido."));
-//        }
-//        List<Show> shows = showService.searchShows(searchQuery);
-//        return ResponseEntity.ok(shows);
-//    }
-
     @GetMapping("/{user_id}")
     public ResponseEntity<?> getUserById(@PathVariable(name = "user_id")  @NotBlank(message = "El nombre de userId no puede estar vacío")  String userId) {
         User result = userService.getUserById(userId);

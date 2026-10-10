@@ -31,31 +31,23 @@ public class OrderService {
                     ItemResponseDto orderItem;
                     for (ItemDto item : items){
                         if(pedido.items().contains(item.itemId())){
-                            orderItem = new ItemResponseDto();
-                            orderItem.setDisplayName(item.displayName());
-                            orderItem.setDeliveryStatus(item.deliveryStatus());
-                            orderItem.setQuantity(item.quantity());
-                            orderItem.setItemId(item.itemId());
+                            orderItem = new ItemResponseDto(
+                                    item.itemId(), item.quantity(), item.deliveryStatus(), item.displayName());
                             orderItems.add(orderItem);
                         }
                     }
-                    OrderResponseDto order = new OrderResponseDto();
-                    order.setOrderRef(pedido.orderRef());
-                    order.setOrderStatus(pedido.orderStatus());
-                    order.setStoreName(pedido.storeName());
-                    order.setChannel(pedido.canal());
-                    order.setItems(orderItems);
-                    return order;
+                    return new OrderResponseDto(
+                            pedido.orderRef(), orderItems, pedido.canal(), pedido.orderStatus(), pedido.storeName());
                 })
                 .filter(order -> matchesCriteria(order, query))
                 .collect(Collectors.toList());
     }
 
     private boolean matchesCriteria(OrderResponseDto order, String query) {
-        if (TextNormalizer.flexibleMatches(order.getOrderRef(), query)) return true;
-        if (TextNormalizer.flexibleMatches(order.getOrderStatus(), query)) return true;
-        if (TextNormalizer.flexibleMatches(order.getStoreName(), query)) return true;
-        return order.getItems().stream()
-                .anyMatch(itemName -> TextNormalizer.flexibleMatches(itemName.getDisplayName(), query));
+        if (TextNormalizer.flexibleMatches(order.orderRef(), query)) return true;
+        if (TextNormalizer.flexibleMatches(order.orderStatus(), query)) return true;
+        if (TextNormalizer.flexibleMatches(order.storeName(), query)) return true;
+        return order.items().stream()
+                .anyMatch(itemName -> TextNormalizer.flexibleMatches(itemName.displayName(), query));
     }
 }

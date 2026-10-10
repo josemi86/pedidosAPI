@@ -6,8 +6,6 @@ import com.exam.demo.client.dto.ItemDto;
 import com.exam.demo.client.dto.PedidoDto;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -21,35 +19,21 @@ public class MockApiClient {
     private final String ITEMS_URL = "https://6994a4eab081bc23e9c0f61e.mockapi.io/api/v1/items";
 
     public List<Order> fetchUserOrders(String userId) {
-        List<Order> orders= new ArrayList<>();
         List<PedidoDto> pedidos = fetchOrders();
         List<ItemDto> items = fetchItems();
-        for (PedidoDto pedido : pedidos) {
-            if (pedido.userId().equals(userId)) {
-                Order order = new Order();
-                order.setOrderRef(pedido.orderRef());
-                order.setChannel(pedido.canal());
-                order.setItems(fetchOrderItems(pedido.items(), items));
-                orders.add(order);
-            }
-        }
+        List<Order> orders= pedidos.stream()
+                .filter(pedido -> pedido.userId().equals(userId))
+                .map(pedido -> new Order(pedido.orderRef(), fetchOrderItems(pedido.items(), items), pedido.canal()))
+                .toList();
         return orders;
     }
 
     private List<Item> fetchOrderItems(List<String> itemsPedido, List<ItemDto> items) {
-        List<Item> orderItems = new ArrayList<>();
-        for (String itemPedido : itemsPedido) {
-            for (ItemDto item : items) {
-                if (itemPedido.equals(item.itemId())) {
-                    Item orderItem = new Item();
-                    orderItem.setItemId(item.itemId());
-                    orderItem.setQuantity(item.quantity());
-                    orderItem.setDeliveryStatus(item.deliveryStatus());
-                    orderItems.add(orderItem);
-                }
-            }
-        }
-        return orderItems;
+        return itemsPedido.stream()
+                .flatMap(itemPedido -> items.stream()
+                        .filter(item -> itemPedido.equals(item.itemId())))
+                .map(item -> new Item(item.itemId(), item.quantity(), item.deliveryStatus()))
+                .toList();
     }
 
     public List<PedidoDto> fetchOrders() {

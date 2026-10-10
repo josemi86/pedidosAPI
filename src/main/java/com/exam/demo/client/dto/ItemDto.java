@@ -1,6 +1,6 @@
-package com.exam.demo.model.http;
+package com.exam.demo.client.dto;
 
-public record ItemDTO(
+public record ItemDto(
         String itemId,
         int quantity,
         String displayName,

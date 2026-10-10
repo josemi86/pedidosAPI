@@ -1,81 +1,61 @@
 package com.exam.demo.service;
 
-import com.exam.demo.model.Item;
-import com.exam.demo.model.Order;
-import com.exam.demo.model.User;
-import com.exam.demo.model.http.ItemDTO;
-import com.exam.demo.model.http.PedidoDTO;
-import com.exam.demo.model.http.UserRequest;
-import com.exam.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.exam.demo.client.MockApiClient;
+import com.exam.demo.model.dto.ItemResponseDto;
+import com.exam.demo.model.dto.OrderResponseDto;
+import com.exam.demo.client.dto.ItemDto;
+import com.exam.demo.client.dto.PedidoDto;
+import com.exam.demo.util.TextNormalizer;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final MockApiClient mockApiClient;
 
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    private final String PEDIDOS_URL = "https://6994a4eab081bc23e9c0f61e.mockapi.io/api/v1/pedidos";
-    private final String ITEMS_URL = "https://6994a4eab081bc23e9c0f61e.mockapi.io/api/v1/items";
-
-    public User getUserById(String userId) {
-        return userRepository.findByUserId(userId);
+    public OrderService(MockApiClient mockApiClient) {
+        this.mockApiClient = mockApiClient;
     }
 
-    public void createUser(UserRequest request) {
-        User newUser = new User(
-                request.getUserId(),
-                request.getName(),
-                request.getFirstSurname(),
-                request.getSecondSurname(),
-                request.getAddress(),
-                fetchUserOrders(request.getUserId())
-        );
-        userRepository.save(newUser);
+    public List<OrderResponseDto> searchOrders(String query) {
+
+        List<PedidoDto> pedidos = mockApiClient.fetchOrders();
+        List<ItemDto> items = mockApiClient.fetchItems();
+
+        return pedidos.stream()
+                .map(pedido -> {
+                    List<ItemResponseDto> orderItems = new ArrayList<>();
+                    ItemResponseDto orderItem;
+                    for (ItemDto item : items){
+                        if(pedido.items().contains(item.itemId())){
+                            orderItem = new ItemResponseDto();
+                            orderItem.setDisplayName(item.displayName());
+                            orderItem.setDeliveryStatus(item.deliveryStatus());
+                            orderItem.setQuantity(item.quantity());
+                            orderItem.setItemId(item.itemId());
+                            orderItems.add(orderItem);
+                        }
+                    }
+                    OrderResponseDto order = new OrderResponseDto();
+                    order.setOrderRef(pedido.orderRef());
+                    order.setOrderStatus(pedido.orderStatus());
+                    order.setStoreName(pedido.storeName());
+                    order.setChannel(pedido.canal());
+                    order.setItems(orderItems);
+                    return order;
+                })
+                .filter(order -> matchesCriteria(order, query))
+                .collect(Collectors.toList());
     }
 
-    private List<Order> fetchUserOrders(String userId) {
-        List<Order> orders= new ArrayList<>();
-        PedidoDTO[] rawPedidos = restTemplate.getForObject(PEDIDOS_URL, PedidoDTO[].class);
-        ItemDTO[] rawItems = restTemplate.getForObject(ITEMS_URL, ItemDTO[].class);
-        List<PedidoDTO> pedidos = rawPedidos != null ? Arrays.asList(rawPedidos) : Collections.emptyList();
-        List<ItemDTO> items = rawItems != null ? Arrays.asList(rawItems) : Collections.emptyList();
-        for (PedidoDTO pedido : pedidos) {
-            if (pedido.userId().equals(userId)) {
-                Order order = new Order();
-                order.setOrderRef(pedido.orderRef());
-                order.setChannel(pedido.canal());
-                order.setItems(fetchItems(pedido.items(), items));
-                orders.add(order);
-            }
-        }
-        return orders;
+    private boolean matchesCriteria(OrderResponseDto order, String query) {
+        if (TextNormalizer.flexibleMatches(order.getOrderRef(), query)) return true;
+        if (TextNormalizer.flexibleMatches(order.getOrderStatus(), query)) return true;
+        if (TextNormalizer.flexibleMatches(order.getStoreName(), query)) return true;
+        return order.getItems().stream()
+                .anyMatch(itemName -> TextNormalizer.flexibleMatches(itemName.getDisplayName(), query));
     }
-
-    private List<Item> fetchItems(List<String> itemsPedido, List<ItemDTO> items) {
-        List<Item> orderItems = new ArrayList<>();
-        for (String itemPedido : itemsPedido) {
-            for (ItemDTO item : items) {
-                if (itemPedido.equals(item.itemId())) {
-                    Item orderItem = new Item();
-                    orderItem.setItemId(item.itemId());
-                    orderItem.setQuantity(item.quantity());
-                    orderItem.setDeliveryStatus(item.deliveryStatus());
-                    orderItems.add(orderItem);
-                }
-            }
-        }
-        return orderItems;
-    }
-
-
 }

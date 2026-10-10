@@ -1,8 +1,8 @@
-package com.exam.demo.model.http;
+package com.exam.demo.client.dto;
 
 import java.util.List;
 
-public record PedidoDTO(
+public record PedidoDto(
         String orderRef,
         String userId,
         String canal,

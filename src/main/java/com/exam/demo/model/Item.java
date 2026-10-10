@@ -5,6 +5,16 @@ public class Item {
     private Integer quantity;
     private String deliveryStatus;
 
+    public Item(String itemId, Integer quantity, String deliveryStatus) {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.deliveryStatus = deliveryStatus;
+    }
+
+    public Item() {
+
+    }
+
     public String getItemId() {
         return itemId;
     }

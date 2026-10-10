@@ -10,7 +10,7 @@ public class Order {
     private List<Item> items;
     private String channel;
 
-    public Order(String orderRef, List<Item> items, Integer quantity, String channel, String deliveryStatus) {
+    public Order(String orderRef, List<Item> items, String channel) {
         this.orderRef = orderRef;
         this.items = items;
         this.channel = channel;

@@ -1,8 +1,8 @@
-package com.exam.demo.model.http;
+package com.exam.demo.model.dto;
 
 import jakarta.validation.constraints.*;
 
-public class UserRequest {
+public class UserRequestDto {
     @NotNull(message = "El userId es requerido.")
     private String userId;
 

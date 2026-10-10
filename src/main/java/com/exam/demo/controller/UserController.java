@@ -1,7 +1,7 @@
 package com.exam.demo.controller;
 
 import com.exam.demo.model.User;
-import com.exam.demo.model.http.UserRequest;
+import com.exam.demo.model.dto.UserRequestDto;
 import com.exam.demo.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequest request) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody UserRequestDto request) {
             userService.createUser(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                     "status", "success",

@@ -1,11 +1,12 @@
 package com.exam.demo.controller;
 
 import com.exam.demo.model.Order;
+import com.exam.demo.model.dto.ItemResponseDto;
+import com.exam.demo.model.dto.OrderResponseDto;
 import com.exam.demo.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -14,15 +15,15 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(OrderService orderSearchService) {
-        this.orderService = orderSearchService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Order>> search(@RequestParam("q") String query) {
+    public ResponseEntity<List<OrderResponseDto>> search(@RequestParam("text") String query) {
         if (query == null || query.trim().length() < 2) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return ResponseEntity.ok(orderService.searchOrders(query));
     }
 }

@@ -14,14 +14,16 @@ public class User {
     private String firstSurname;
     private String secondSurname;
     private String address;
+    private String email;
     private List<Order> orders;
 
-    public User(String userId, String name, String firstSurname, String secondSurname, String address, List<Order> orders) {
+    public User(String userId, String name, String firstSurname, String secondSurname, String address, String email, List<Order> orders) {
         this.userId = userId;
         this.name = name;
         this.firstSurname = firstSurname;
         this.secondSurname = secondSurname;
         this.address = address;
+        this.email = email;
         this.orders = orders;
     }
 
@@ -63,6 +65,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public List<Order> getOrders() {

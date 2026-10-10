@@ -10,7 +10,6 @@ public class User {
 
     @Id
     private String userId;
-    private String name;
     private String firstSurname;
     private String secondSurname;
     private String address;
@@ -19,7 +18,6 @@ public class User {
 
     public User(String userId, String name, String firstSurname, String secondSurname, String address, String email, List<Order> orders) {
         this.userId = userId;
-        this.name = name;
         this.firstSurname = firstSurname;
         this.secondSurname = secondSurname;
         this.address = address;
@@ -27,59 +25,4 @@ public class User {
         this.orders = orders;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getFirstSurname() {
-        return firstSurname;
-    }
-
-    public void setFirstSurname(String firstSurname) {
-        this.firstSurname = firstSurname;
-    }
-
-    public String getSecondSurname() {
-        return secondSurname;
-    }
-
-    public void setSecondSurname(String secondSurname) {
-        this.secondSurname = secondSurname;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
 }

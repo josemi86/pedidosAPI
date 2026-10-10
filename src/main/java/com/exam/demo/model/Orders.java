@@ -11,8 +11,6 @@ public class Orders {
     private String channel;
     private String deliveryStatus;
 
-    public Orders() {}
-
     public Orders(String orderRef, String itemId, Integer quantity, String channel, String deliveryStatus) {
         this.orderRef = orderRef;
         this.itemId = itemId;

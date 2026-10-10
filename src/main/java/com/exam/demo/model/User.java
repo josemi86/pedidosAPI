@@ -14,9 +14,9 @@ public class User {
     private String firstSurname;
     private String secondSurname;
     private String address;
-    private List<Orders> orders;
+    private List<Order> orders;
 
-    public User(String userId, String name, String firstSurname, String secondSurname, String address, List<Orders> orders) {
+    public User(String userId, String name, String firstSurname, String secondSurname, String address, List<Order> orders) {
         this.userId = userId;
         this.name = name;
         this.firstSurname = firstSurname;
@@ -65,11 +65,11 @@ public class User {
         this.address = address;
     }
 
-    public List<Orders> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 
-    public void setOrders(List<Orders> orders) {
+    public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
 }

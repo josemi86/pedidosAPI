@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 @Validated
 public class UserController {
 
@@ -22,7 +22,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/{user_id}")
-    public ResponseEntity<?> getUserById(@PathVariable(name = "user_id")  @NotBlank(message = "El nombre de userId no puede estar vacío")  String userId) {
+    public ResponseEntity<?> getUserById(@PathVariable(name = "user_id")  @NotBlank(message = "El userId no puede estar vacío")  String userId) {
         User result = userService.getUserById(userId);
         return ResponseEntity.ok(result);
     }
@@ -34,6 +34,6 @@ public class UserController {
                     "status", "success",
                     "userId", request.getUserId()
             ));
-
     }
+
 }

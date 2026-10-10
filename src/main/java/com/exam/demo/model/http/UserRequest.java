@@ -3,7 +3,7 @@ package com.exam.demo.model.http;
 import jakarta.validation.constraints.*;
 
 public class UserRequest {
-    @NotNull(message = "El user_id es requerido.")
+    @NotNull(message = "El userId es requerido.")
     private String userId;
 
     @NotBlank(message = "El nombre no puede estar vacío.")
@@ -20,7 +20,6 @@ public class UserRequest {
     private String email;
 
     // Getters y Setters}
-
     public String getUserId() {
         return userId;
     }

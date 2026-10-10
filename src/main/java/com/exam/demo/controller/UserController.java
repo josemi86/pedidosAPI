@@ -18,8 +18,11 @@ import java.util.Map;
 @Validated
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/{user_id}")
     public ResponseEntity<?> getUserById(@PathVariable(name = "user_id")  @NotBlank(message = "El userId no puede estar vacío")  String userId) {
@@ -32,7 +35,7 @@ public class UserController {
             userService.createUser(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                     "status", "success",
-                    "userId", request.getUserId()
+                    "userId", request.userId()
             ));
     }
 

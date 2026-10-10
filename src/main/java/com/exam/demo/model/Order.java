@@ -1,7 +1,5 @@
 package com.exam.demo.model;
 
-import org.springframework.data.annotation.Id;
-
 import java.util.List;
 
 public class Order {
@@ -9,12 +7,6 @@ public class Order {
     private String orderRef;
     private List<Item> items;
     private String channel;
-
-    public Order(String orderRef, List<Item> items, String channel) {
-        this.orderRef = orderRef;
-        this.items = items;
-        this.channel = channel;
-    }
 
     public Order() {
 

@@ -1,7 +1,5 @@
 package com.exam.demo.controller;
 
-import com.exam.demo.model.Order;
-import com.exam.demo.model.dto.ItemResponseDto;
 import com.exam.demo.model.dto.OrderResponseDto;
 import com.exam.demo.service.OrderService;
 import org.springframework.http.ResponseEntity;

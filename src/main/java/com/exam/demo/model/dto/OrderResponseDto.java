@@ -1,7 +1,5 @@
 package com.exam.demo.model.dto;
 
-import com.exam.demo.model.Item;
-
 import java.util.List;
 
 public class OrderResponseDto {
@@ -11,22 +9,6 @@ public class OrderResponseDto {
     private String channel;
     private  String orderStatus;
     private  String storeName;
-
-    public OrderResponseDto(String orderRef, List<ItemResponseDto> items, Integer quantity, String channel, String deliveryStatus, String orderStatus, String storeName) {
-        this.orderRef = orderRef;
-        this.items = items;
-        this.channel = channel;
-        this.orderStatus = orderStatus;
-        this.storeName = storeName;
-    }
-
-    public OrderResponseDto(String orderRef, List<ItemResponseDto> items, String channel, String orderStatus, String storeName) {
-        this.orderRef = orderRef;
-        this.items = items;
-        this.channel = channel;
-        this.orderStatus = orderStatus;
-        this.storeName = storeName;
-    }
 
     public OrderResponseDto() {
 
@@ -71,5 +53,6 @@ public class OrderResponseDto {
     public void setStoreName(String storeName) {
         this.storeName = storeName;
     }
+
 }
 

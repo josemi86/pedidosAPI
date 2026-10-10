@@ -6,12 +6,6 @@ public class ItemResponseDto {
     private String deliveryStatus;
     private String displayName;
 
-    public ItemResponseDto(String itemId, Integer quantity, String deliveryStatus) {
-        this.itemId = itemId;
-        this.quantity = quantity;
-        this.deliveryStatus = deliveryStatus;
-    }
-
     public ItemResponseDto() {
 
     }

@@ -24,13 +24,13 @@ public class UserService {
 
     public void createUser(UserRequestDto request) {
         User newUser = new User(
-                request.getUserId(),
-                request.getName(),
-                request.getFirstSurname(),
-                request.getSecondSurname(),
-                request.getAddress(),
-                request.getEmail(),
-                mockApiClient.fetchUserOrders(request.getUserId())
+                request.userId(),
+                request.name(),
+                request.firstSurname(),
+                request.secondSurname(),
+                request.address(),
+                request.email(),
+                mockApiClient.fetchUserOrders(request.userId())
         );
         userRepository.save(newUser);
     }

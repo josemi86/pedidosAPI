@@ -25,7 +25,6 @@ public class OrderService {
         List<ItemDto> items = mockApiClient.fetchItems();
         return pedidos.stream()
                 .map(pedido -> {
-                    ItemResponseDto orderItem;
                     List<ItemResponseDto> orderItems = items.stream()
                             .filter(item -> pedido.items().contains(item.itemId()))
                             .map(item -> new ItemResponseDto(

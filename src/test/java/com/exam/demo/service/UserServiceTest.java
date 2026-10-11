@@ -1,7 +1,6 @@
 package com.exam.demo.service;
 
 import com.exam.demo.client.MockApiClient;
-import com.exam.demo.client.dto.ItemDto;
 import com.exam.demo.model.Item;
 import com.exam.demo.model.Order;
 import com.exam.demo.model.User;

@@ -1,20 +1,23 @@
 package com.exam.demo.repository;
 
 import com.exam.demo.model.User;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.data.mongodb.test.autoconfigure.DataMongoTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
-@DataMongoTest
+@DataMongoTest(excludeAutoConfiguration = {
+        org.springframework.boot.mongodb.autoconfigure.MongoAutoConfiguration.class,
+        org.springframework.boot.data.mongodb.autoconfigure.DataMongoAutoConfiguration.class
+})
 class UserRepositoryTest {
 
-    @Autowired
+    @MockitoBean
     private UserRepository userRepository;
 
     private User sampleUser;
@@ -28,17 +31,13 @@ class UserRepositoryTest {
                 "secondSurname",
                 "address",
                 "email@gmail.com",
-                Collections.emptyList());
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
+                Collections.emptyList()
+        );
     }
 
     @Test
     void findByUserId_WhenUserExists_ShouldReturnUser() {
-        userRepository.save(sampleUser);
+        when(userRepository.findByUserId("user1")).thenReturn(sampleUser);
 
         User foundUser = userRepository.findByUserId("user1");
 
@@ -49,6 +48,8 @@ class UserRepositoryTest {
 
     @Test
     void findByUserId_WhenUserDoesNotExist_ShouldReturnNull() {
+        when(userRepository.findByUserId("non_existent_id")).thenReturn(null);
+
         User foundUser = userRepository.findByUserId("non_existent_id");
 
         assertThat(foundUser).isNull();

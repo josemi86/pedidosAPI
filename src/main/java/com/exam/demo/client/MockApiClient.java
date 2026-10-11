@@ -4,6 +4,7 @@ import com.exam.demo.model.Item;
 import com.exam.demo.model.Order;
 import com.exam.demo.client.dto.ItemDto;
 import com.exam.demo.client.dto.PedidoDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
@@ -13,19 +14,25 @@ import java.util.List;
 @Component
 public class MockApiClient {
 
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
 
-    private final String PEDIDOS_URL = "https://6994a4eab081bc23e9c0f61e.mockapi.io/api/v1/pedidos";
-    private final String ITEMS_URL = "https://6994a4eab081bc23e9c0f61e.mockapi.io/api/v1/items";
+    @Value("${pedidos.url}")
+    private String PEDIDOS_URL;
+
+    @Value("${items.url}")
+    private String ITEMS_URL;
+
+    public MockApiClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     public List<Order> fetchUserOrders(String userId) {
         List<PedidoDto> pedidos = fetchOrders();
         List<ItemDto> items = fetchItems();
-        List<Order> orders= pedidos.stream()
+        return pedidos.stream()
                 .filter(pedido -> pedido.userId().equals(userId))
                 .map(pedido -> new Order(pedido.orderRef(), fetchOrderItems(pedido.items(), items), pedido.canal()))
                 .toList();
-        return orders;
     }
 
     private List<Item> fetchOrderItems(List<String> itemsPedido, List<ItemDto> items) {

@@ -21,21 +21,16 @@ public class OrderService {
     }
 
     public List<OrderResponseDto> searchOrders(String query) {
-
         List<PedidoDto> pedidos = mockApiClient.fetchOrders();
         List<ItemDto> items = mockApiClient.fetchItems();
-
         return pedidos.stream()
                 .map(pedido -> {
-                    List<ItemResponseDto> orderItems = new ArrayList<>();
                     ItemResponseDto orderItem;
-                    for (ItemDto item : items){
-                        if(pedido.items().contains(item.itemId())){
-                            orderItem = new ItemResponseDto(
-                                    item.itemId(), item.quantity(), item.deliveryStatus(), item.displayName());
-                            orderItems.add(orderItem);
-                        }
-                    }
+                    List<ItemResponseDto> orderItems = items.stream()
+                            .filter(item -> pedido.items().contains(item.itemId()))
+                            .map(item -> new ItemResponseDto(
+                                    item.itemId(), item.quantity(), item.deliveryStatus(), item.displayName()))
+                            .toList();
                     return new OrderResponseDto(
                             pedido.orderRef(), orderItems, pedido.canal(), pedido.orderStatus(), pedido.storeName());
                 })

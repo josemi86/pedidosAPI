@@ -1,4 +1,4 @@
-package com.exam.demo.client.config;
+package com.exam.demo.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestClient;
 
 @Configuration
-public class ClientConfig {
+public class MockApiClientConfig {
 
     @Value("${mockapi.base.url}")
     private String BASE_URL;

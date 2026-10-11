@@ -1,6 +1,6 @@
-package com.exam.demo.client.dto;
+package com.exam.demo.model.dto.mockapi;
 
-public record ItemDto(
+public record MockApiItemDto(
         String itemId,
         int quantity,
         String displayName,

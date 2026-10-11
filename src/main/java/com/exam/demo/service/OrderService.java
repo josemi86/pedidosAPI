@@ -3,8 +3,8 @@ package com.exam.demo.service;
 import com.exam.demo.client.MockApiClient;
 import com.exam.demo.model.dto.ItemResponseDto;
 import com.exam.demo.model.dto.OrderResponseDto;
-import com.exam.demo.client.dto.ItemDto;
-import com.exam.demo.client.dto.PedidoDto;
+import com.exam.demo.model.dto.mockapi.MockApiItemDto;
+import com.exam.demo.model.dto.mockapi.MockApiPedidoDto;
 import com.exam.demo.util.TextNormalizer;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +21,8 @@ public class OrderService {
     }
 
     public List<OrderResponseDto> searchOrders(String query) {
-        List<PedidoDto> pedidos = mockApiClient.fetchOrders();
-        List<ItemDto> items = mockApiClient.fetchItems();
+        List<MockApiPedidoDto> pedidos = mockApiClient.fetchOrders();
+        List<MockApiItemDto> items = mockApiClient.fetchItems();
         return pedidos.stream()
                 .map(pedido -> {
                     List<ItemResponseDto> orderItems = items.stream()

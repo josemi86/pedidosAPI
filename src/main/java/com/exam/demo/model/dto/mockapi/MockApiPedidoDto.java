@@ -1,8 +1,8 @@
-package com.exam.demo.client.dto;
+package com.exam.demo.model.dto.mockapi;
 
 import java.util.List;
 
-public record PedidoDto(
+public record MockApiPedidoDto(
         String orderRef,
         String userId,
         String canal,

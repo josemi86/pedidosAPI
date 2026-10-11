@@ -1,8 +1,8 @@
 package com.exam.demo.service;
 
 import com.exam.demo.client.MockApiClient;
-import com.exam.demo.client.dto.ItemDto;
-import com.exam.demo.client.dto.PedidoDto;
+import com.exam.demo.model.dto.mockapi.MockApiItemDto;
+import com.exam.demo.model.dto.mockapi.MockApiPedidoDto;
 import com.exam.demo.model.dto.ItemResponseDto;
 import com.exam.demo.model.dto.OrderResponseDto;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,20 +27,20 @@ class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
 
-    private List<PedidoDto> mockPedidos;
-    private List<ItemDto> mockItems;
+    private List<MockApiPedidoDto> mockPedidos;
+    private List<MockApiItemDto> mockItems;
 
     @BeforeEach
     void setUp() {
         mockPedidos = List.of(
-                new PedidoDto("order1", "user1", "channel1", "status1", List.of("item2", "item3"), "store1"),
-                new PedidoDto("order2", "user2", "channel2", "status2", List.of("item1"), "store2")
+                new MockApiPedidoDto("order1", "user1", "channel1", "status1", List.of("item2", "item3"), "store1"),
+                new MockApiPedidoDto("order2", "user2", "channel2", "status2", List.of("item1"), "store2")
         );
 
         mockItems = List.of(
-                new ItemDto("item1", 1, "Laptop Dell XPS", "DELIVERED"),
-                new ItemDto("item2", 2, "Mouse Inalámbrico", "SHIPPED"),
-                new ItemDto("item3", 3, "Smartphone Samsung", "PROCESSING")
+                new MockApiItemDto("item1", 1, "Laptop Dell XPS", "DELIVERED"),
+                new MockApiItemDto("item2", 2, "Mouse Inalámbrico", "SHIPPED"),
+                new MockApiItemDto("item3", 3, "Smartphone Samsung", "PROCESSING")
         );
     }
 

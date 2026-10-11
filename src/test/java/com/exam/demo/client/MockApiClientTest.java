@@ -1,7 +1,7 @@
 package com.exam.demo.client;
 
-import com.exam.demo.client.dto.ItemDto;
-import com.exam.demo.client.dto.PedidoDto;
+import com.exam.demo.model.dto.mockapi.MockApiItemDto;
+import com.exam.demo.model.dto.mockapi.MockApiPedidoDto;
 import com.exam.demo.model.Order;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -36,8 +36,8 @@ class MockApiClientUnitTest {
     @InjectMocks
     private MockApiClient mockApiClient;
 
-    private List<PedidoDto> mockPedidos;
-    private List<ItemDto> mockItems;
+    private List<MockApiPedidoDto> mockPedidos;
+    private List<MockApiItemDto> mockItems;
 
     @BeforeEach
     void setUp() {
@@ -45,13 +45,13 @@ class MockApiClientUnitTest {
         ReflectionTestUtils.setField(mockApiClient, "ITEMS_URL", "http://api.com");
 
         mockPedidos = List.of(
-                new PedidoDto("order1", "user1", "channel1", "status1", List.of("item1"), "store1"),
-                new PedidoDto("order2", "user2", "channel2", "status2", List.of("item2"), "store2")
+                new MockApiPedidoDto("order1", "user1", "channel1", "status1", List.of("item1"), "store1"),
+                new MockApiPedidoDto("order2", "user2", "channel2", "status2", List.of("item2"), "store2")
         );
 
         mockItems = List.of(
-                new ItemDto("item1", 2, "displayName1", "deliveryStatus1"),
-                new ItemDto("item2", 4, "displayName2", "deliveryStatus2")
+                new MockApiItemDto("item1", 2, "displayName1", "deliveryStatus1"),
+                new MockApiItemDto("item2", 4, "displayName2", "deliveryStatus2")
         );
     }
 

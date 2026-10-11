@@ -2,8 +2,8 @@ package com.exam.demo.client;
 
 import com.exam.demo.model.Item;
 import com.exam.demo.model.Order;
-import com.exam.demo.client.dto.ItemDto;
-import com.exam.demo.client.dto.PedidoDto;
+import com.exam.demo.model.dto.mockapi.MockApiItemDto;
+import com.exam.demo.model.dto.mockapi.MockApiPedidoDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -26,15 +26,15 @@ public class MockApiClient {
     }
 
     public List<Order> fetchUserOrders(String userId) {
-        List<PedidoDto> pedidos = fetchOrders();
-        List<ItemDto> items = fetchItems();
+        List<MockApiPedidoDto> pedidos = fetchOrders();
+        List<MockApiItemDto> items = fetchItems();
         return pedidos.stream()
                 .filter(pedido -> pedido.userId().equals(userId))
                 .map(pedido -> new Order(pedido.orderRef(), fetchOrderItems(pedido.items(), items), pedido.canal()))
                 .toList();
     }
 
-    private List<Item> fetchOrderItems(List<String> itemsPedido, List<ItemDto> items) {
+    private List<Item> fetchOrderItems(List<String> itemsPedido, List<MockApiItemDto> items) {
         return itemsPedido.stream()
                 .flatMap(itemPedido -> items.stream()
                         .filter(item -> itemPedido.equals(item.itemId())))
@@ -42,18 +42,18 @@ public class MockApiClient {
                 .toList();
     }
 
-    public List<PedidoDto> fetchOrders() {
+    public List<MockApiPedidoDto> fetchOrders() {
         return restClient.get()
                 .uri(PEDIDOS_URL)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<PedidoDto>>() {});
+                .body(new ParameterizedTypeReference<List<MockApiPedidoDto>>() {});
     }
 
-    public List<ItemDto> fetchItems() {
+    public List<MockApiItemDto> fetchItems() {
         return restClient.get()
                 .uri(ITEMS_URL)
                 .retrieve()
-                .body(new ParameterizedTypeReference<List<ItemDto>>() {});
+                .body(new ParameterizedTypeReference<List<MockApiItemDto>>() {});
     }
 
 }
